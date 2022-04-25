@@ -1,0 +1,4 @@
+#.npmignore for csproj-version
+
+.github/
+testdata/
