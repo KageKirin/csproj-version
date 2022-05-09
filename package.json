@@ -3,6 +3,9 @@
   "version": "0.0.3",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "csproj-version": "index.js"
+  },
   "scripts": {},
   "repository": {
     "type": "git",
