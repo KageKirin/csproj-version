@@ -1,0 +1,13 @@
+name: Install csproj-version
+runs:
+  using: composite
+  steps:
+  - name: Install
+    shell: bash
+    run: |-
+      npm install -g https://github.com/kagekirin/csproj-version/tarball/main
+  - name: Verify installation
+    shell: bash
+    run: |-
+      which csproj-version
+      csproj-version --version
