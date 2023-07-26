@@ -1,0 +1,18 @@
+name: Get project version
+inputs:
+  file:
+    description: path to .csproj
+    required: true
+outputs:
+  version:
+    description: version retrieved from ${{ inputs.file }}
+    value: ${{ steps.get.outputs.value }}
+runs:
+  using: composite
+  steps:
+  - id: get
+    name: Get project version from ${{ inputs.file }}
+    shell: bash
+    run: |-
+      csproj-version get ${{ inputs.file }}
+      echo "value=$(csproj-version get ${{ inputs.file }})" >> $GITHUB_OUTPUT
