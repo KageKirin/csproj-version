@@ -3,6 +3,9 @@ inputs:
   file:
     description: path to .csproj
     required: true
+  version:
+    description: version in SemVer format
+    required: true
 outputs:
   version:
     description: version set to inputs.file
