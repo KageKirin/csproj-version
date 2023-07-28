@@ -5,7 +5,7 @@ inputs:
     required: true
 outputs:
   version:
-    description: version set to ${{ inputs.file }}
+    description: version set to inputs.file
     value: ${{ steps.set.outputs.value }}
 runs:
   using: composite
