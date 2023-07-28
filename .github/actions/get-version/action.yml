@@ -16,3 +16,6 @@ runs:
     run: |-
       csproj-version get ${{ inputs.file }}
       echo "version=$(csproj-version get ${{ inputs.file }})" >> $GITHUB_OUTPUT
+  - shell: bash
+    run: |-
+      echo ${{ steps.get.outputs.version }}
