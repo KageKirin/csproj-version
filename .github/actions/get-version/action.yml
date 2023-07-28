@@ -6,7 +6,7 @@ inputs:
 outputs:
   version:
     description: version retrieved from inputs.file
-    value: ${{ steps.get.outputs.value }}
+    value: ${{ steps.get.outputs.version }}
 runs:
   using: composite
   steps:
@@ -15,4 +15,4 @@ runs:
     shell: bash
     run: |-
       csproj-version get ${{ inputs.file }}
-      echo "value=$(csproj-version get ${{ inputs.file }})" >> $GITHUB_OUTPUT
+      echo "version=$(csproj-version get ${{ inputs.file }})" >> $GITHUB_OUTPUT
