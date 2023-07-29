@@ -3,6 +3,10 @@ inputs:
   file:
     description: path to .csproj
     required: true
+  xpath:
+    description: XPath to version element
+    required: false
+    default: '//PropertyGroup/Version'
 outputs:
   version:
     description: version retrieved from inputs.file
@@ -14,8 +18,8 @@ runs:
     name: Get project version from ${{ inputs.file }}
     shell: bash
     run: |-
-      csproj-version get ${{ inputs.file }}
-      echo "version=$(csproj-version get ${{ inputs.file }})" >> $GITHUB_OUTPUT
+      csproj-version get --xpath ${{ inputs.xpath }} ${{ inputs.file }}
+      echo "version=$(csproj-version get --xpath ${{ inputs.xpath }} ${{ inputs.file }})" >> $GITHUB_OUTPUT
   - shell: bash
     run: |-
       echo ${{ steps.get.outputs.version }}
