@@ -22,8 +22,9 @@ runs:
     name: Get project version from ${{ inputs.file }}
     shell: bash
     run: |-
-      csproj-version get --xpath '${{ inputs.xpath }}' --regex '${{ inputs.regex }}' '${{ inputs.file }}'
-      echo "version=$(csproj-version get --xpath '${{ inputs.xpath }}' --regex '${{ inputs.regex }}' '${{ inputs.file }}')" >> $GITHUB_OUTPUT
+      version=$(csproj-version get --xpath '${{ inputs.xpath }}' --regex '${{ inputs.regex }}' '${{ inputs.file }}')
+      echo ${version}
+      echo "version=${version}" >> $GITHUB_OUTPUT
   - shell: bash
     run: |-
       echo ${{ steps.get.outputs.version }}
