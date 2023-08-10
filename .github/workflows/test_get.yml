@@ -21,8 +21,8 @@ jobs:
       # basic simple test: just print current this package's version
       - name: Test functionality
         run: |
-          node . get     'testdata/testproj/testproj.csproj'
-          echo "version=$(node . get     'testdata/testproj/testproj.csproj')" >> $GITHUB_OUTPUT
+          node . get     testdata/testproj/testproj.csproj
+          echo "version=$(node . get     testdata/testproj/testproj.csproj)" >> $GITHUB_OUTPUT
         id: test
       - name: Print results
         run: echo ${{ steps.test.outputs.version }}

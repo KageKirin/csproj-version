@@ -20,8 +20,8 @@ jobs:
       # basic simple test: just bump this package's version
       - name: Test functionality
         run: |
-          node . bump  --major --minor --patch    'testdata/testproj/testproj.csproj'
-          echo "version=$(node . get    testdata/testproj/testproj.csproj')" >> $GITHUB_OUTPUT
+          node . bump  --major --minor --patch    testdata/testproj/testproj.csproj
+          echo "version=$(node . get    testdata/testproj/testproj.csproj)" >> $GITHUB_OUTPUT
         id: test
       - name: Print results
         run: echo ${{ steps.test.outputs.version }}

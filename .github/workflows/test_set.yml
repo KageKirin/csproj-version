@@ -20,8 +20,8 @@ jobs:
       # basic simple test: just set this package's version
       - name: Test functionality
         run: |
-          node . set --version '1.2.3'     'testdata/testproj/testproj.csproj'
-          echo "version=$(node . get     '    /testproj/testproj.csproj')" >> $GITHUB_OUTPUT
+          node . set --version '1.2.3'     testdata/testproj/testproj.csproj
+          echo "version=$(node . get       testdata/testproj/testproj.csproj)" >> $GITHUB_OUTPUT
         id: test
       - name: Print results
         run: echo ${{ steps.test.outputs.version }}
@@ -127,7 +127,7 @@ jobs:
         uses: ./.github/actions/set-version
         with:
           version: '1.2.3'
-          file: 'testdata/testproj/testproj.csproj'
+          file: testdata/testproj/testproj.csproj
         id: test
       - name: Print results
         run: echo ${{ steps.test.outputs.version }}
