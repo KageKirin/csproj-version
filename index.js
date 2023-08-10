@@ -26,8 +26,9 @@ const subparsers = parser.add_subparsers({
 const get_parser = subparsers.add_parser('get',   {aliases: ['g'], help: 'gets the current version of a given .csproj' })
 const set_parser = subparsers.add_parser('set',   {aliases: ['s'], help: 'sets the current version of a given .csproj' })
 const bump_parser = subparsers.add_parser('bump', {aliases: ['b'], help: 'bumps the current version of a given .csproj' })
+const cmp_parser = subparsers.add_parser('cmp',   {aliases: ['c'], help: 'compare the current version of a given .csproj' })
 
-const parsers = [get_parser, set_parser, bump_parser]
+const parsers = [get_parser, set_parser, bump_parser, cmp_parser]
 
 parsers.forEach(p => {
     p.add_argument('-r', '--regex', {
@@ -62,6 +63,12 @@ bump_parser.add_argument('-p', '--patch', {
     action: 'store_true'
 })
 
+cmp_parser.add_argument('-v', '--version', {
+    help: 'the semver version to compare to; has to be compatible to the provided regex.',
+    type: String,
+    required: true
+})
+
 const args = parser.parse_args();
 
 async function run()
@@ -72,6 +79,7 @@ async function run()
         case 'get':  return get_version();
         case 'set':  return set_version();
         case 'bump': return bump_version();
+        case 'cmp':  return compare_version();
     }
 }
 run();
@@ -271,6 +279,32 @@ function bump_version()
     return 0;
 }
 
+function compare_version()
+{
+    try
+    {
+        const doc = read_csproj(args.file);
+        const verElement = get_csproj_version(doc);
+        if (verElement && verElement.data && args.version)
+        {
+            const cmp = compare_versions(args.version, verElement.data);
+            console.log("%i", cmp);
+        }
+        else
+        {
+            console.error("invalid .csproj does not contain version");
+            return 1;
+        }
+    }
+    catch (error)
+    {
+        console.error(error.message);
+        return 1;
+    }
+
+    return 0;
+}
+
 //-----------------------------------------------------------------------------
 
 function parse_version(version)
@@ -324,4 +358,43 @@ function write_csproj(csprojfile, doc)
     const serializer = new XMLSerializer();
     const xml = serializer.serializeToString(doc);
     fs.writeFileSync(csprojfile, xml + '\n');
+}
+
+
+function compare_versions(version_A, version_B)
+{
+    const a_version = parse_version(version_A);
+    if (a_version === null || a_version === undefined) throw(`failed to parse '{version_A}'`);
+    let [a_major, a_minor, a_patch, a_prerelease, a_buildmetadata] = a_version;
+
+    const b_version = parse_version(version_B);
+    if (b_version === null || b_version === undefined) throw(`failed to parse '{version_B}'`);
+    let [b_major, b_minor, b_patch, b_prerelease, b_buildmetadata] = b_version;
+
+    if (a_major < b_major)
+        return -1;
+    else if(a_major > b_major)
+        return 1;
+
+    if (a_minor < b_minor)
+        return -1;
+    else if(a_minor > b_minor)
+        return 1;
+
+    if (a_patch < b_patch)
+        return -1;
+    else if(a_patch > b_patch)
+        return 1;
+
+    if (a_prerelease < b_prerelease)
+        return -1;
+    else if(a_prerelease > b_prerelease)
+        return 1;
+
+    if (a_buildmetadata < b_buildmetadata)
+        return -1;
+    else if(a_buildmetadata > b_buildmetadata)
+        return 1;
+
+    return 0;
 }
