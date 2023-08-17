@@ -40,7 +40,7 @@ Set if you to be compatible with a different, non-semver format.`,
     })
 
     p.add_argument('-x', '--xpath', { help: 'XPath to version element.', type: String, default: '//PropertyGroup/Version' })
-    p.add_argument('files', { help: 'the .csproj files from which to read/write the version.'})
+    p.add_argument('files', { help: 'the .csproj files from which to read/write the version.', nargs: '+'})
 })
 
 set_parser.add_argument('-v', '--version', {
