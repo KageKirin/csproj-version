@@ -124,60 +124,61 @@ function set_version()
 {
     try
     {
-        // console.dir(args)
-        const doc = read_csproj(args.files);
-        const verElement = get_csproj_version(doc);
-        if (verElement)
-        {
-            const ver = parse_version(args.version);
-            if (ver)
+        args.files.forEach((file) => {
+            const doc = read_csproj(file);
+            const verElement = get_csproj_version(doc);
+            if (verElement)
             {
-                verElement.data = args.version;
-                write_csproj(args.files, doc);
+                const ver = parse_version(args.version);
+                if (ver)
+                {
+                    verElement.data = args.version;
+                    write_csproj(file, doc);
+                }
+                else
+                {
+                    console.error("failed to parse .csproj version");
+                    return 1;
+                }
             }
             else
             {
-                console.error("failed to parse .csproj version");
-                return 1;
-            }
-        }
-        else
-        {
-            console.error("invalid .csproj does not contain version");
-            return 1;
-        }
-
-        // read back
-        const doc2 = read_csproj(args.files);
-        const verElement2 = get_csproj_version(doc2);
-        if (verElement2)
-        {
-            const ver = parse_version(verElement2.data);
-            if (ver)
-            {
-                console.log(verElement2.data);
-            }
-            else
-            {
-                console.error("failed to parse .csproj version at read back");
+                console.error("invalid .csproj does not contain version");
                 return 1;
             }
 
-            if (verElement2.data === verElement.data)
+            // read back
+            const doc2 = read_csproj(file);
+            const verElement2 = get_csproj_version(doc2);
+            if (verElement2)
             {
-                // no issues
+                const ver = parse_version(verElement2.data);
+                if (ver)
+                {
+                    console.log(verElement2.data);
+                }
+                else
+                {
+                    console.error("failed to parse .csproj version at read back");
+                    return 1;
+                }
+
+                if (verElement2.data === verElement.data)
+                {
+                    // no issues
+                }
+                else
+                {
+                    console.error("readback version different from input version");
+                    return 1;
+                }
             }
             else
             {
-                console.error("readback version different from input version");
+                console.error("invalid .csproj does not contain version at read back");
                 return 1;
             }
-        }
-        else
-        {
-            console.error("invalid .csproj does not contain version at read back");
-            return 1;
-        }
+        })
     }
     catch (error)
     {
