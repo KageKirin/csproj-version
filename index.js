@@ -40,7 +40,7 @@ Set if you to be compatible with a different, non-semver format.`,
     })
 
     p.add_argument('-x', '--xpath', { help: 'XPath to version element.', type: String, default: '//PropertyGroup/Version' })
-    p.add_argument('file', { help: 'the .csproj from which to read/write the version.'})
+    p.add_argument('files', { help: 'the .csproj files from which to read/write the version.'})
 })
 
 set_parser.add_argument('-v', '--version', {
@@ -88,7 +88,7 @@ function get_version()
 {
     try
     {
-        const doc = read_csproj(args.file);
+        const doc = read_csproj(args.files);
         const verElement = get_csproj_version(doc);
         if (verElement)
         {
@@ -123,7 +123,7 @@ function set_version()
     try
     {
         // console.dir(args)
-        const doc = read_csproj(args.file);
+        const doc = read_csproj(args.files);
         const verElement = get_csproj_version(doc);
         if (verElement)
         {
@@ -131,7 +131,7 @@ function set_version()
             if (ver)
             {
                 verElement.data = args.version;
-                write_csproj(args.file, doc);
+                write_csproj(args.files, doc);
             }
             else
             {
@@ -146,7 +146,7 @@ function set_version()
         }
 
         // read back
-        const doc2 = read_csproj(args.file);
+        const doc2 = read_csproj(args.files);
         const verElement2 = get_csproj_version(doc2);
         if (verElement2)
         {
@@ -190,7 +190,7 @@ function bump_version()
 {
     try
     {
-        const doc = read_csproj(args.file);
+        const doc = read_csproj(args.files);
         const verElement = get_csproj_version(doc);
         if (verElement)
         {
@@ -224,7 +224,7 @@ function bump_version()
                     verElement.data += `+${buildmetadata}`;
                 }
 
-                write_csproj(args.file, doc);
+                write_csproj(args.files, doc);
             }
             else
             {
@@ -239,7 +239,7 @@ function bump_version()
         }
 
         // read back
-        const doc2 = read_csproj(args.file);
+        const doc2 = read_csproj(args.files);
         const verElement2 = get_csproj_version(doc2);
         if (verElement2)
         {
@@ -283,7 +283,7 @@ function compare_version()
 {
     try
     {
-        const doc = read_csproj(args.file);
+        const doc = read_csproj(args.files);
         const verElement = get_csproj_version(doc);
         if (verElement && verElement.data && args.version)
         {
