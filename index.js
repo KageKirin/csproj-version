@@ -288,18 +288,20 @@ function compare_version()
 {
     try
     {
-        const doc = read_csproj(args.files);
-        const verElement = get_csproj_version(doc);
-        if (verElement && verElement.data && args.version)
-        {
-            const cmp = compare_versions(args.version, verElement.data);
-            console.log("%i", cmp);
-        }
-        else
-        {
-            console.error("invalid .csproj does not contain version");
-            return 1;
-        }
+        args.files.forEach((file) => {
+            const doc = read_csproj(file);
+            const verElement = get_csproj_version(doc);
+            if (verElement && verElement.data && args.version)
+            {
+                const cmp = compare_versions(args.version, verElement.data);
+                console.log("%i", cmp);
+            }
+            else
+            {
+                console.error("invalid .csproj does not contain version");
+                return 1;
+            }
+        })
     }
     catch (error)
     {
