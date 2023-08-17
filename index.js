@@ -88,26 +88,28 @@ function get_version()
 {
     try
     {
-        const doc = read_csproj(args.files);
-        const verElement = get_csproj_version(doc);
-        if (verElement)
-        {
-            const ver = parse_version(verElement.data);
-            if (ver)
+        args.files.forEach((file) => {
+            const doc = read_csproj(file);
+            const verElement = get_csproj_version(doc);
+            if (verElement)
             {
-                console.log(verElement.data);
+                const ver = parse_version(verElement.data);
+                if (ver)
+                {
+                    console.log(verElement.data);
+                }
+                else
+                {
+                    console.error("failed to parse .csproj version");
+                    return 1;
+                }
             }
             else
             {
-                console.error("failed to parse .csproj version");
+                console.error("invalid .csproj does not contain version");
                 return 1;
             }
-        }
-        else
-        {
-            console.error("invalid .csproj does not contain version");
-            return 1;
-        }
+        })
     }
     catch (error)
     {
