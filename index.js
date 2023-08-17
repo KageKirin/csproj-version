@@ -11,7 +11,7 @@ const xpath = require('xpath')
 const { DOMParser, XMLSerializer } = require('@xmldom/xmldom')
 
 const parser = new ArgumentParser({
-  description: 'get/set/bump the current version to a given .csproj',
+  description: 'get/set/bump/compare the current version to a given .csproj',
   add_help: true,
 });
 
