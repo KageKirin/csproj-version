@@ -191,9 +191,9 @@ function set_version()
 
 function bump_version()
 {
-    try
-    {
-        args.files.forEach((file) => {
+    args.files.forEach((file) => {
+        try
+        {
             const doc = read_csproj(file);
             const verElement = get_csproj_version(doc);
             if (verElement)
@@ -273,13 +273,13 @@ function bump_version()
                 console.error("invalid .csproj does not contain version at read back");
                 return 1;
             }
-        })
-    }
-    catch (error)
-    {
-        console.error(error.message);
-        return 1;
-    }
+        }
+        catch (error)
+        {
+            console.error(error.message);
+            return 1;
+        }
+    })
 
     return 0;
 }
