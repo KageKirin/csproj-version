@@ -86,9 +86,9 @@ run();
 
 function get_version()
 {
-    try
-    {
-        args.files.forEach((file) => {
+    args.files.forEach((file) => {
+        try
+        {
             const doc = read_csproj(file);
             const verElement = get_csproj_version(doc);
             if (verElement)
@@ -109,22 +109,22 @@ function get_version()
                 console.error("invalid .csproj does not contain version");
                 return 1;
             }
-        })
-    }
-    catch (error)
-    {
-        console.error(error.message);
-        return 1;
-    }
+        }
+        catch (error)
+        {
+            console.error(error.message);
+            return 1;
+        }
+    })
 
     return 0;
 }
 
 function set_version()
 {
-    try
-    {
-        args.files.forEach((file) => {
+    args.files.forEach((file) => {
+        try
+        {
             const doc = read_csproj(file);
             const verElement = get_csproj_version(doc);
             if (verElement)
@@ -178,22 +178,22 @@ function set_version()
                 console.error("invalid .csproj does not contain version at read back");
                 return 1;
             }
-        })
-    }
-    catch (error)
-    {
-        console.error(error.message);
-        return 1;
-    }
+        }
+        catch (error)
+        {
+            console.error(error.message);
+            return 1;
+        }
+    })
 
     return 0;
 }
 
 function bump_version()
 {
-    try
-    {
-        args.files.forEach((file) => {
+    args.files.forEach((file) => {
+        try
+        {
             const doc = read_csproj(file);
             const verElement = get_csproj_version(doc);
             if (verElement)
@@ -273,22 +273,22 @@ function bump_version()
                 console.error("invalid .csproj does not contain version at read back");
                 return 1;
             }
-        })
-    }
-    catch (error)
-    {
-        console.error(error.message);
-        return 1;
-    }
+        }
+        catch (error)
+        {
+            console.error(error.message);
+            return 1;
+        }
+    })
 
     return 0;
 }
 
 function compare_version()
 {
-    try
-    {
-        args.files.forEach((file) => {
+    args.files.forEach((file) => {
+        try
+        {
             const doc = read_csproj(file);
             const verElement = get_csproj_version(doc);
             if (verElement && verElement.data && args.version)
@@ -301,13 +301,13 @@ function compare_version()
                 console.error("invalid .csproj does not contain version");
                 return 1;
             }
-        })
-    }
-    catch (error)
-    {
-        console.error(error.message);
-        return 1;
-    }
+        }
+        catch (error)
+        {
+            console.error(error.message);
+            return 1;
+        }
+    })
 
     return 0;
 }
